@@ -1,0 +1,35 @@
+-- ==============================
+-- Task 1
+-- List all countries with related cities & customers
+-- Include countries without cities/customers
+-- ==============================
+
+SELECT 
+    co.country_name_eng AS country,
+    COALESCE(ci.city_name, 'No City') AS city,
+    COALESCE(cu.customer_name, 'No Customer') AS customer
+FROM country co
+LEFT JOIN city ci 
+    ON co.id = ci.country_id
+LEFT JOIN customer cu 
+    ON ci.id = cu.city_id
+ORDER BY co.country_name_eng, ci.city_name, cu.customer_name;
+
+
+-- ==============================
+-- Task 2
+-- List only countries that have at least one city
+-- Include cities even if they have no customers
+-- Exclude countries without any city
+-- ==============================
+
+SELECT 
+    co.country_name_eng AS country,
+    ci.city_name AS city,
+    COALESCE(cu.customer_name, 'No Customer') AS customer
+FROM country co
+INNER JOIN city ci 
+    ON co.id = ci.country_id   -- only keep countries with at least one city
+LEFT JOIN customer cu 
+    ON ci.id = cu.city_id
+ORDER BY co.country_name_eng, ci.city_name, cu.customer_name;
